@@ -1,24 +1,45 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deals | Find the Game</title>
+  <meta name="description" content="Discover discounted PC games and compare prices.">
+  <title>Game Deals | Find the Game</title>
   <link rel="stylesheet" href="/css/style.css">
+  <script type="module" src="/js/deals-page.js"></script>
 </head>
 <body>
   <header class="site-header">
-    <a class="logo" href="/">FIND THE GAME</a>
-    <nav aria-label="Main navigation">
-      <a href="/deals.html">Deals</a>
-      <a href="/favorites.html">Favorites</a>
-      <a href="/game.html">About</a>
-    </nav>
+    <div class="header-inner">
+      <a class="logo" href="/">FIND THE GAME</a>
+      <nav aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/deals.html" aria-current="page">Deals</a>
+        <a href="/favorites.html">Favorites</a>
+      </nav>
+    </div>
   </header>
-  <main class="results-section">
-    <h1>Browse Game Deals</h1>
-    <p>Deal browsing will be added in Week 6.</p>
+  <main class="page-container">
+    <h1>Current Game Deals</h1>
+    <p>Browse discounted PC games. Prices are shown in USD.</p>
+    <div class="filters">
+      <label for="deal-search">Search Deals
+        <input id="deal-search" type="search" placeholder="Search by game title">
+      </label>
+      <label for="deal-sort">Sort By
+        <select id="deal-sort">
+          <option value="rating">Deal Rating</option>
+          <option value="discount">Highest Discount</option>
+          <option value="price">Lowest Price</option>
+          <option value="name">Game Name</option>
+        </select>
+      </label>
+    </div>
+    <p id="deals-status" role="status">Loading deals...</p>
+    <section id="deals-container" class="game-grid" aria-label="Available game deals"></section>
   </main>
-  <footer><p>Find the Game</p></footer>
+  <footer class="site-footer">
+    <p>Find the Game | Deal data provided by CheapShark</p>
+  </footer>
 </body>
 </html>

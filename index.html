@@ -10,12 +10,14 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="logo" href="/">FIND THE GAME</a>
-    <nav aria-label="Main navigation">
-      <a href="/deals.html">Deals</a>
-      <a href="/favorites.html">Favorites</a>
-      <a href="/game.html">About</a>
-    </nav>
+    <div class="header-inner">
+      <a class="logo" href="/">FIND THE GAME</a>
+      <nav aria-label="Main navigation">
+        <a href="/" aria-current="page">Home</a>
+        <a href="/deals.html">Deals</a>
+        <a href="/favorites.html">Favorites</a>
+      </nav>
+    </div>
   </header>
   <main>
     <section class="hero">
@@ -50,10 +52,10 @@
         </div>
       </div>
       <p id="status" role="status" aria-live="polite">Loading games...</p>
-      <div id="game-container" class="game-grid"></div>
+      <div id="game-container" class="game-grid" aria-label="Game results"></div>
     </section>
   </main>
-  <footer>
+  <footer class="site-footer">
     <p>&copy; <span id="year"></span> Find the Game | Data from RAWG and CheapShark</p>
   </footer>
 </body>

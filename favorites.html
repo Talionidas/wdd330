@@ -1,24 +1,32 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="View your saved favorite PC games.">
   <title>Favorites | Find the Game</title>
   <link rel="stylesheet" href="/css/style.css">
+  <script type="module" src="/js/favorites-page.js"></script>
 </head>
 <body>
   <header class="site-header">
-    <a class="logo" href="/">FIND THE GAME</a>
-    <nav aria-label="Main navigation">
-      <a href="/deals.html">Deals</a>
-      <a href="/favorites.html">Favorites</a>
-      <a href="/game.html">About</a>
-    </nav>
+    <div class="header-inner">
+      <a class="logo" href="/">FIND THE GAME</a>
+      <nav aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/deals.html">Deals</a>
+        <a href="/favorites.html" aria-current="page">Favorites</a>
+      </nav>
+    </div>
   </header>
-  <main class="results-section">
-    <h1>Your Favorite Games</h1>
-    <p>Saving games to favorites will be added in Week 6.</p>
+  <main class="page-container">
+    <h1>My Favorite Games</h1>
+    <p>Games you save will appear here, even after refreshing the page.</p>
+    <p id="favorites-status" role="status"></p>
+    <section id="favorites-container" class="game-grid" aria-label="Saved games"></section>
   </main>
-  <footer><p>Find the Game</p></footer>
+  <footer class="site-footer">
+    <p>Find the Game | Your favorites are stored locally in this browser</p>
+  </footer>
 </body>
 </html>

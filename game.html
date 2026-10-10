@@ -1,25 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About | Find the Game</title>
+  <meta name="description" content="Explore PC game details, ratings, and deals.">
+  <title>Game Details | Find the Game</title>
   <link rel="stylesheet" href="/css/style.css">
+  <script type="module" src="/js/game-page.js"></script>
 </head>
 <body>
   <header class="site-header">
-    <a class="logo" href="/">FIND THE GAME</a>
-    <nav aria-label="Main navigation">
-      <a href="/deals.html">Deals</a>
-      <a href="/favorites.html">Favorites</a>
-      <a href="/game.html">About</a>
-    </nav>
+    <div class="header-inner">
+      <a class="logo" href="/">FIND THE GAME</a>
+      <nav aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/deals.html">Deals</a>
+        <a href="/favorites.html">Favorites</a>
+      </nav>
+    </div>
   </header>
-  <main class="results-section">
-    <h1>About Find the Game</h1>
-    <p>Find the Game helps PC players discover games and compare prices across stores.</p>
-    <p>Game information comes from RAWG. Deal information comes from CheapShark.</p>
+  <main class="page-container">
+    <a class="back-link" href="/">← Back to Games</a>
+    <p id="status" role="status">Loading game details...</p>
+    <section id="game-details" aria-label="Game information"></section>
   </main>
-  <footer><p>Find the Game</p></footer>
+  <footer class="site-footer">
+    <p>Find the Game | Game information from RAWG | Deals from CheapShark</p>
+  </footer>
 </body>
 </html>
