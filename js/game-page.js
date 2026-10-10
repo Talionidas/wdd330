@@ -96,8 +96,8 @@ async function loadGame() {
         dealsContainer.append(item);
       });
     } catch(error) {
-      console.error(error);
-      dealsContainer.textContent = "Prices are temporarily unavailable.";
+      console.error("CheapShark price lookup failed:",error);
+      dealsContainer.textContent = `Prices temporarily unavailable: ${error.message}`;
     }
   } catch(error) {
     console.error(error);

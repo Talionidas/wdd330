@@ -39,7 +39,7 @@ export function createGameCard(game,deal = null) {
   if (deal) {
     price.textContent = `$${Number(deal.normalPrice).toFixed(2)} → $${Number(deal.salePrice).toFixed(2)} USD`;
   } else {
-    price.textContent = "No verified deal found";
+    price.textContent = "Price not available or not checked";
   }
 
   const actions = document.createElement("div");

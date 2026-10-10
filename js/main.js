@@ -1,5 +1,5 @@
 import {getGames} from "./rawg.js";
-import {getDealsForGames} from "./cheapshark.js";
+import {searchDealsByQuery,findBestDeal} from "./cheapshark.js";
 import {displayGames} from "./games.js";
 
 const searchForm = document.querySelector("#search-form");
@@ -35,20 +35,31 @@ async function loadGames() {
       return;
     }
 
-    status.textContent = `Loaded ${games.length} games. Checking prices...`;
+    if (!search) {
+      status.textContent = `${games.length} games displayed. Search for a game to check prices.`;
+      return;
+    }
 
-    const deals = await getDealsForGames(games,(completed,total) => {
-      if (request === requestNumber) {
-        status.textContent = `Checking deals: ${completed}/${total}`;
-      }
-    });
+    status.textContent = `${games.length} games found. Checking CheapShark prices...`;
 
-    if (request !== requestNumber) return;
-    currentDeals = deals;
-    renderSortedGames();
+    try {
+      const deals = await searchDealsByQuery(search);
+      if (request !== requestNumber) return;
 
-    const matches = [...deals.values()].filter(Boolean).length;
-    status.textContent = `${games.length} games displayed. ${matches} verified deal matches.`;
+      currentDeals = new Map();
+      games.forEach(game => {
+        currentDeals.set(game.id,findBestDeal(game,deals));
+      });
+
+      renderSortedGames();
+
+      const matches = [...currentDeals.values()].filter(Boolean).length;
+      status.textContent = `${games.length} games displayed. ${matches} verified deal matches.`;
+    } catch(error) {
+      if (request !== requestNumber) return;
+      console.error("CheapShark error:",error);
+      status.textContent = `${games.length} games displayed. Prices temporarily unavailable: ${error.message}`;
+    }
   } catch(error) {
     if (request !== requestNumber) return;
     console.error(error);
@@ -80,6 +91,7 @@ searchForm.addEventListener("submit",event => {
   event.preventDefault();
   loadGames();
 });
+
 genreFilter.addEventListener("change",loadGames);
 sortFilter.addEventListener("change",renderSortedGames);
 document.addEventListener("favoritesChanged",renderSortedGames);
