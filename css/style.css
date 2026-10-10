@@ -443,3 +443,44 @@ footer {
     transition: none;
   }
 }
+
+
+/* Consistent card buttons */
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: .5rem;
+}
+.card-actions .button-link,
+.card-actions .favorite-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: .65rem .9rem;
+  box-sizing: border-box;
+  font: inherit;
+  font-size: .9rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.card-actions .favorite-button {
+  background: #14213d;
+  color: #fff;
+}
+.card-actions .favorite-button:hover {
+  background: #dc2626;
+  color: #fff;
+}
+.card-actions .favorite-button[aria-pressed="true"] {
+  background: #b91c1c;
+  color: #fff;
+}
+.card-actions .favorite-button[aria-pressed="true"]:hover {
+  background: #991b1b;
+}
