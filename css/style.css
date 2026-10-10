@@ -484,3 +484,48 @@ footer {
 .card-actions .favorite-button[aria-pressed="true"]:hover {
   background: #991b1b;
 }
+
+
+/* Fix button sizes */
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.card-actions .button-link,
+.card-actions .favorite-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  min-height: 38px;
+  padding: 0 12px;
+  margin: 0;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.card-actions .favorite-button {
+  background: #14213d;
+  color: #fff;
+  cursor: pointer;
+}
+.card-actions .favorite-button:hover {
+  background: #dc2626;
+  color: #fff;
+}
+.card-actions .favorite-button[aria-pressed="true"] {
+  background: #b91c1c;
+  color: #fff;
+}
+.card-actions .favorite-button[aria-pressed="true"]:hover {
+  background: #991b1b;
+}
