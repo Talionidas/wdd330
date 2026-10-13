@@ -112,12 +112,34 @@ function displayFeaturedDeals(deals) {
     }
   }
 
-  featuredDeals = [...unique.values()]
-    .sort((a,b) => {
-      const discountDifference = calculateDiscount(b) - calculateDiscount(a);
-      return discountDifference || Number(a.salePrice) - Number(b.salePrice);
-    })
-    .slice(0,3);
+
+  const available = [...unique.values()];
+  const brackets = [
+    {min:25,max:49},
+    {min:50,max:89},
+    {min:90,max:100}
+  ];
+  const selected = [];
+
+  brackets.forEach(bracket => {
+    const matches = available
+      .filter(deal => {
+        const discount = calculateDiscount(deal);
+        return discount >= bracket.min && discount <= bracket.max;
+      })
+      .sort((a,b) => calculateDiscount(b) - calculateDiscount(a));
+
+    if (matches.length) {
+      selected.push(matches[0]);
+    }
+  });
+
+  const remaining = available
+    .filter(deal => !selected.includes(deal))
+    .sort((a,b) => calculateDiscount(b) - calculateDiscount(a));
+
+  featuredDeals = [...selected,...remaining].slice(0,3);
+
 
   featuredDeals.forEach(deal => {
     featuredContainer.append(createFeaturedCard(deal));

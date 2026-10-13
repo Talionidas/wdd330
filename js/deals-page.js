@@ -47,8 +47,23 @@ function displayDeals() {
     price.className = "game-price";
     price.textContent = `$${Number(deal.normalPrice).toFixed(2)} → $${Number(deal.salePrice).toFixed(2)} USD`;
 
-    const discount = document.createElement("p");
-    discount.textContent = `Save ${Math.round(Number(deal.savings))}%`;
+    const discount = document.createElement("span");
+    const percentage = Math.max(0,Math.min(100,Math.round(Number(deal.savings) || 0)));
+
+    discount.className = "discount-badge deals-discount";
+
+    if (percentage < 25) {
+      discount.classList.add("discount-low");
+    } else if (percentage < 50) {
+      discount.classList.add("discount-medium");
+    } else if (percentage < 75) {
+      discount.classList.add("discount-high");
+    } else {
+      discount.classList.add("discount-extreme");
+    }
+
+    discount.textContent = `-${percentage}%`;
+
 
     const link = document.createElement("a");
     link.className = "button-link";
