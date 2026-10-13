@@ -529,3 +529,106 @@ footer {
 .card-actions .favorite-button[aria-pressed="true"]:hover {
   background: #991b1b;
 }
+
+/* Discount badges */
+.game-price {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.original-price {
+  color: #64748b;
+  text-decoration: line-through;
+}
+.sale-price {
+  color: #15803d;
+  font-weight: 700;
+}
+.discount-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+}
+.discount-low {
+  background: #e5e7eb;
+  color: #374151;
+  transition: transform 0.2s ease;
+}
+.discount-low:hover {
+  transform: scale(1.06);
+}
+.discount-medium {
+  background: #fef3c7;
+  color: #92400e;
+  animation: discountPulse 3s ease-in-out infinite;
+}
+.discount-high {
+  background: #ffedd5;
+  color: #9a3412;
+  animation: discountGlow 2.5s ease-in-out infinite;
+}
+.discount-extreme {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 2px solid #dc2626;
+  box-shadow: 0 0 10px rgba(220,38,38,0.25);
+  animation: discountExtreme 2s ease-in-out infinite;
+}
+.discount-extreme::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 30%;
+  height: 200%;
+  background: rgba(255,255,255,0.55);
+  transform: rotate(25deg);
+  animation: discountShine 3s ease-in-out infinite;
+}
+@keyframes discountPulse {
+  0%,100% {transform: scale(1);}
+  50% {transform: scale(1.05);}
+}
+@keyframes discountGlow {
+  0%,100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(234,88,12,0);
+  }
+  50% {
+    transform: scale(1.07);
+    box-shadow: 0 0 12px rgba(234,88,12,0.35);
+  }
+}
+@keyframes discountExtreme {
+  0%,100% {
+    transform: scale(1);
+    box-shadow: 0 0 8px rgba(220,38,38,0.25);
+  }
+  50% {
+    transform: scale(1.09);
+    box-shadow: 0 0 18px rgba(220,38,38,0.55);
+  }
+}
+@keyframes discountShine {
+  0%,65% {left: -60%;}
+  100% {left: 140%;}
+}
+@media (prefers-reduced-motion: reduce) {
+  .discount-badge,
+  .discount-badge::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .discount-low:hover {
+    transform: none;
+  }
+}

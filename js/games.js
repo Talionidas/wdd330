@@ -36,8 +36,41 @@ export function createGameCard(game,deal = null) {
 
   const price = document.createElement("p");
   price.className = "game-price";
+
   if (deal) {
-    price.textContent = `$${Number(deal.normalPrice).toFixed(2)} → $${Number(deal.salePrice).toFixed(2)} USD`;
+    const normalPrice = Number(deal.normalPrice);
+    const salePrice = Number(deal.salePrice);
+    const discount = normalPrice > 0
+      ? Math.max(0,Math.min(100,Math.round((1 - salePrice / normalPrice) * 100)))
+      : 0;
+
+    const original = document.createElement("span");
+    original.className = "original-price";
+    original.textContent = `$${normalPrice.toFixed(2)}`;
+
+    const sale = document.createElement("span");
+    sale.className = "sale-price";
+    sale.textContent = `$${salePrice.toFixed(2)} USD`;
+
+    price.append(original,sale);
+
+    if (discount > 0) {
+      const badge = document.createElement("span");
+      badge.className = "discount-badge";
+
+      if (discount < 25) {
+        badge.classList.add("discount-low");
+      } else if (discount < 50) {
+        badge.classList.add("discount-medium");
+      } else if (discount < 75) {
+        badge.classList.add("discount-high");
+      } else {
+        badge.classList.add("discount-extreme");
+      }
+
+      badge.textContent = `-${discount}%`;
+      price.append(badge);
+    }
   } else {
     price.textContent = "Price not available or not checked";
   }
