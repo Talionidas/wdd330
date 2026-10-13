@@ -1,7 +1,7 @@
 const baseURL = "https://www.cheapshark.com/api/1.0";
-const cachePrefix = "ftg-cheapshark-v3:";
-const cooldownKey = "ftg-cheapshark-cooldown";
-const cacheDuration = 60 * 60 * 1000;
+const cachePrefix = "ftg-cheapshark-v4:";
+const cooldownKey = "ftg-cheapshark-cooldown-v4";
+const cacheDuration = 6 * 60 * 60 * 1000;
 const fallbackCooldown = 15 * 60 * 1000;
 const pendingRequests = new Map();
 
@@ -11,11 +11,11 @@ export function normalizeTitle(title) {
 
 function readCache(key) {
   try {
-    const stored = sessionStorage.getItem(cachePrefix + key);
-    if (!stored) return null;
-    const entry = JSON.parse(stored);
+    const saved = localStorage.getItem(cachePrefix + key);
+    if (!saved) return null;
+    const entry = JSON.parse(saved);
     if (Date.now() >= entry.expires) {
-      sessionStorage.removeItem(cachePrefix + key);
+      localStorage.removeItem(cachePrefix + key);
       return null;
     }
     return entry.data;
@@ -26,18 +26,18 @@ function readCache(key) {
 
 function saveCache(key,data) {
   try {
-    sessionStorage.setItem(cachePrefix + key,JSON.stringify({
+    localStorage.setItem(cachePrefix + key,JSON.stringify({
       data,
       expires:Date.now() + cacheDuration
     }));
   } catch(error) {
-    console.warn("Could not save CheapShark cache:",error);
+    console.warn("CheapShark cache could not be saved:",error);
   }
 }
 
 function getCooldown() {
   try {
-    return Number(sessionStorage.getItem(cooldownKey)) || 0;
+    return Number(localStorage.getItem(cooldownKey)) || 0;
   } catch(error) {
     return 0;
   }
@@ -45,10 +45,10 @@ function getCooldown() {
 
 function setCooldown(milliseconds) {
   try {
-    const until = Date.now() + milliseconds;
-    sessionStorage.setItem(cooldownKey,String(Math.max(getCooldown(),until)));
+    const until = Math.max(getCooldown(),Date.now() + milliseconds);
+    localStorage.setItem(cooldownKey,String(until));
   } catch(error) {
-    console.warn("Could not save API cooldown:",error);
+    console.warn("CheapShark cooldown could not be saved:",error);
   }
 }
 
@@ -60,10 +60,11 @@ async function cheapSharkRequest(path,params = {}) {
   const query = new URLSearchParams(params);
   const key = `${path}?${query}`;
   const cached = readCache(key);
+
   if (cached !== null) return cached;
 
   if (Date.now() < getCooldown()) {
-    throw new Error(`CheapShark is temporarily unavailable. Try again in approximately ${getCooldownMinutes()} minute(s).`);
+    throw new Error(`CheapShark is temporarily unavailable. Retry in approximately ${getCooldownMinutes()} minute(s).`);
   }
 
   if (pendingRequests.has(key)) return pendingRequests.get(key);
@@ -85,7 +86,7 @@ async function cheapSharkRequest(path,params = {}) {
         }
 
         setCooldown(Math.max(wait,60000));
-        throw new Error("CheapShark rate limit reached. Please try again later.");
+        throw new Error("CheapShark rate limit reached.");
       }
 
       if (!response.ok) {
@@ -108,7 +109,7 @@ async function cheapSharkRequest(path,params = {}) {
     } catch(error) {
       if (error instanceof TypeError) {
         setCooldown(fallbackCooldown);
-        throw new Error("CheapShark could not be reached. It may be rate-limited or experiencing a network problem.");
+        throw new Error("CheapShark is unreachable or temporarily blocked.");
       }
       throw error;
     } finally {
@@ -129,6 +130,7 @@ export async function searchDealsByQuery(query) {
 }
 
 export async function searchGameDeals(title) {
+  if (!String(title || "").trim()) return [];
   const deals = await searchDealsByQuery(title);
   const normalized = normalizeTitle(title);
   return deals.filter(deal => normalizeTitle(deal.title) === normalized);
@@ -136,8 +138,13 @@ export async function searchGameDeals(title) {
 
 export function findBestDeal(game,deals) {
   const normalized = normalizeTitle(game.name);
-  const matches = deals.filter(deal => normalizeTitle(deal.title) === normalized);
+  const matches = deals.filter(deal =>
+    normalizeTitle(deal.title) === normalized &&
+    Number.isFinite(Number(deal.salePrice))
+  );
+
   if (!matches.length) return null;
+
   return matches.reduce((best,deal) =>
     Number(deal.salePrice) < Number(best.salePrice) ? deal : best
   );
@@ -146,6 +153,7 @@ export function findBestDeal(game,deals) {
 export async function getBestDeal(title) {
   const deals = await searchGameDeals(title);
   if (!deals.length) return null;
+
   return deals.reduce((best,deal) =>
     Number(deal.salePrice) < Number(best.salePrice) ? deal : best
   );

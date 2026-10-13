@@ -1,5 +1,5 @@
 import {getGames} from "./rawg.js";
-import {searchDealsByQuery,findBestDeal} from "./cheapshark.js";
+import {getCurrentDeals,searchDealsByQuery,findBestDeal} from "./cheapshark.js";
 import {displayGames} from "./games.js";
 
 const searchForm = document.querySelector("#search-form");
@@ -35,18 +35,15 @@ async function loadGames() {
       return;
     }
 
-    if (!search) {
-      status.textContent = `${games.length} games displayed. Search for a game to check prices.`;
-      return;
-    }
-
-    status.textContent = `${games.length} games found. Checking CheapShark prices...`;
+    status.textContent = `${games.length} games loaded. Checking prices...`;
 
     try {
-      const deals = await searchDealsByQuery(search);
+      const deals = search
+        ? await searchDealsByQuery(search)
+        : await getCurrentDeals(60);
+
       if (request !== requestNumber) return;
 
-      currentDeals = new Map();
       games.forEach(game => {
         currentDeals.set(game.id,findBestDeal(game,deals));
       });
@@ -54,7 +51,7 @@ async function loadGames() {
       renderSortedGames();
 
       const matches = [...currentDeals.values()].filter(Boolean).length;
-      status.textContent = `${games.length} games displayed. ${matches} verified deal matches.`;
+      status.textContent = `${games.length} games displayed. ${matches} verified deal matches from ${deals.length} CheapShark offers.`;
     } catch(error) {
       if (request !== requestNumber) return;
       console.error("CheapShark error:",error);
