@@ -632,3 +632,168 @@ footer {
     transform: none;
   }
 }
+
+
+/* Interactive effects */
+.game-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.game-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+}
+.site-header nav a {
+  position: relative;
+  transition: color 0.2s ease;
+}
+.site-header nav a::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #fca311;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.site-header nav a:hover::after,
+.site-header nav a:focus-visible::after {
+  transform: scaleX(1);
+}
+.button-link,
+.search-form button {
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.button-link:hover,
+.search-form button:hover {
+  transform: translateY(-2px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .game-card,
+  .site-header nav a,
+  .site-header nav a::after,
+  .button-link,
+  .search-form button {
+    transition: none;
+  }
+  .game-card:hover,
+  .button-link:hover,
+  .search-form button:hover {
+    transform: none;
+  }
+}
+
+
+
+/* Mobile improvements */
+@media (max-width: 600px) {
+  .results-section {
+    padding: 20px 16px;
+  }
+  .results-header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .results-header h2 {
+    margin: 0;
+  }
+  .filters {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .filters select {
+    width: 100%;
+    max-width: 100%;
+  }
+  .game-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .game-card {
+    width: 100%;
+    min-width: 0;
+  }
+  .game-price {
+    font-size: 14px;
+  }
+  .card-actions {
+    gap: 8px;
+  }
+}
+
+
+/* Featured Deals */
+.featured-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 35px 20px 10px;
+}
+.featured-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.featured-heading h2 {
+  margin: 0;
+}
+.featured-heading a {
+  color: #14213d;
+  font-weight: 700;
+  text-decoration: underline;
+}
+.featured-heading a:hover {
+  color: #b45309;
+}
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+.featured-card {
+  min-width: 0;
+  overflow: hidden;
+}
+.featured-image {
+  display: block;
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  background: #e5e7eb;
+}
+.featured-card .game-card-content {
+  padding: 20px;
+}
+.featured-card h3 {
+  margin-top: 0;
+}
+.featured-card .game-price {
+  margin: 14px 0;
+}
+@media (max-width: 900px) {
+  .featured-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 16px;
+  }
+}
+@media (max-width: 600px) {
+  .featured-section {
+    padding: 24px 16px 10px;
+  }
+  .featured-grid {
+    grid-template-columns: 1fr;
+  }
+  .featured-image {
+    height: 200px;
+  }
+}
